@@ -7,7 +7,7 @@ export const AdminMiddleware = async (req : Request, res : Response, next : Next
     const userId = req.userId;
     const teamId = await getTeamId(req);
     console.log(teamId);
-    console.log(req.params);
+    console.log(userId);
     if(!teamId){
         res.status(403).json({
             success : false,

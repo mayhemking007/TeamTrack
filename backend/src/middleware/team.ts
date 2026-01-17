@@ -43,3 +43,4 @@ export const teamMiddleware = async (req : Request, res : Response, next : NextF
         });
     }
 }
+
