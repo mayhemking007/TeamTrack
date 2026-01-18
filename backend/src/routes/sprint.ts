@@ -1,6 +1,6 @@
 import  express, { Router } from "express";
 import {z} from "zod";
-import { SprintModel } from "../db/Model.js";
+import { ProjectModel, SprintModel } from "../db/Model.js";
 import { teamMiddleware } from "../middleware/team.js";
 import { AdminMiddleware } from "../middleware/admin.js";
 import { authMiddleware } from "../middleware/auth.js";
@@ -29,6 +29,16 @@ sprintRouter.post('/projects/:projectId/sprints', AdminMiddleware, teamMiddlewar
     const startedAt = req.body.startedAt;
     const endDate = req.body.endDate;
     try{
+        const project = await ProjectModel.findOne({
+            _id : projectId,
+            status : "active"
+        });
+        if(!project){
+            res.status(403).json({
+                success : false,
+                error : "The project does not exists."
+            })
+        }
         const sprint = await SprintModel.create({
             name : name,
             startedAt: startedAt,
@@ -51,7 +61,7 @@ sprintRouter.post('/projects/:projectId/sprints', AdminMiddleware, teamMiddlewar
         else{
             res.status(401).json({
                 success : false,
-                error : "Team is invalid. Cannot create project."
+                error : "Team is invalid. Cannot create sprint."
             })
         }
     }
@@ -59,7 +69,7 @@ sprintRouter.post('/projects/:projectId/sprints', AdminMiddleware, teamMiddlewar
         console.log(e);
         res.status(503).json({
             success : false,
-            error : "Cannot create the Project"
+            error : "Cannot create the Sprint"
         })
     }
 });
@@ -80,7 +90,7 @@ sprintRouter.get('/projects/:projectId/sprints', teamMiddleware, async (req, res
         else{
             res.status(401).json({
                 success : false,
-                error : "Invalid team. Cannot GET projects"
+                error : "Invalid project. Cannot GET sprints"
             })
         }
     }
@@ -88,7 +98,7 @@ sprintRouter.get('/projects/:projectId/sprints', teamMiddleware, async (req, res
         console.log(e);
         res.status(503).json({
             success : false,
-            error : "Cannot GET projects. Please try later."
+            error : "Cannot GET sprint. Please try later."
         })
     }    
 });
@@ -134,7 +144,7 @@ sprintRouter.put('/:sprintId', teamMiddleware, AdminMiddleware ,async (req, res)
         else{
             res.status(401).json({
                 success : false,
-                error : "Invalid Sprint. Cannot update the project."
+                error : "Invalid Sprint. Cannot update the sprint."
             });
         }
     }
@@ -142,7 +152,7 @@ sprintRouter.put('/:sprintId', teamMiddleware, AdminMiddleware ,async (req, res)
         console.log(e);
         res.status(503).json({
             success : false,
-            error : "Cannot PUT projects. Please try later."
+            error : "Cannot PUT sprint. Please try later."
         });
     }
 });
@@ -175,7 +185,7 @@ sprintRouter.delete('/:sprintId', teamMiddleware, AdminMiddleware ,async (req, r
         console.log(e);
         res.status(503).json({
             success : false,
-            error : "Cannot DELETE project. Please try again later."
+            error : "Cannot DELETE sprint. Please try again later."
         });
     }
 
