@@ -6,9 +6,16 @@ import { teamRouter } from "./routes/team.js";
 import { projectRouter } from "./routes/project.js";
 import { sprintRouter } from "./routes/sprint.js";
 import { taskRouter } from "./routes/task.js";
+import cors from "cors";
+
 
 dotenv.config();
 const app = express();
+
+app.use(cors({
+    origin : "http://localhost:5173",
+    credentials : true
+}));
 
 app.use('/auth', authRouter);
 app.use('/teams', teamRouter);
