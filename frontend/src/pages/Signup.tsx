@@ -1,6 +1,5 @@
-import axios from "axios";
 import { useRef, useState} from "react"
-import { authClient } from "../api/client";
+import { useAuth } from "../auth/AuthContext";
 
 export default function Signup(){
     const [name, setName] = useState("");
@@ -9,17 +8,18 @@ export default function Signup(){
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const passRef = useRef<HTMLInputElement>(null);
-
+    const {SignUp} = useAuth();
+    
     const submitHandler = async () => { 
         try{
             setLoading(true);
-            const response = await authClient.post('/auth/signup', {
-                username : username,
+            const response = await SignUp({
                 name : name,
-                email : email, 
+                email : email,
+                username : username,
                 password : password
             });
-            if(response.data.success){
+            if(response.success){
                 alert("You have signed Up!");
                 setLoading(false);
             }
