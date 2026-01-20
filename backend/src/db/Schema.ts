@@ -3,7 +3,7 @@ import { Schema } from "mongoose";
 const ObjectId = Schema.Types.ObjectId;
 
 export const UserSchema = new Schema({
-    username : String,
+    username : {type : String, unique : true, required : true},
     email : {type : String, unique : true},
     name : String,
     password : String,

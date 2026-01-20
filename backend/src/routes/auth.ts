@@ -93,7 +93,7 @@ authRouter.post('/login', async (req, res) => {
             const isCorrectPass = await bcrypt.compare(password, user.password as string)
             if(isCorrectPass){
                 const token = jwt.sign({
-                    username : username
+                    userId : user._id
                 }, process.env.JWT_SECRET as string);
                 
                 res.json({
