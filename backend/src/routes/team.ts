@@ -39,6 +39,7 @@ teamRouter.post('/', async(req, res) => {
                 res.json({
                     success : true,
                     data : {
+                        id : team.id,
                         name : name,
                         createdBy : userId
                     }
@@ -98,6 +99,36 @@ teamRouter.get('/', async (req, res) => {
         });
     }
 });
+
+teamRouter.get('/:teamId', async(req, res) => {
+    const teamId = req.params.teamId;
+    try{
+        const team = await TeamModel.findOne({
+            _id : teamId!,
+            status : "active"
+        });
+        if(team){
+            res.json({
+                success : true,
+                data : team
+            })
+        }
+        else{
+            res.status(402).json({
+                success : false,
+                error : "team is not found"
+            })
+        }
+    }
+    catch(e){
+        console.log(e);
+        res.status(503).json({
+                success : false,
+                error : "Cannot GET team. Please try again later."
+        });
+    }
+
+})
 
 teamRouter.delete('/:teamId', AdminMiddleware, async (req, res) => {
     const teamId = req.params.teamId;

@@ -1,5 +1,6 @@
 import { useRef, useState} from "react"
 import { useAuth } from "../auth/AuthContext";
+import { useNavigate } from "react-router";
 
 export default function Signup(){
     const [name, setName] = useState("");
@@ -9,6 +10,7 @@ export default function Signup(){
     const [loading, setLoading] = useState(false);
     const passRef = useRef<HTMLInputElement>(null);
     const {SignUp} = useAuth();
+    const navigate = useNavigate();
     
     const submitHandler = async () => { 
         try{
@@ -20,8 +22,8 @@ export default function Signup(){
                 password : password
             });
             if(response.success){
-                alert("You have signed Up!");
                 setLoading(false);
+                navigate('/login');
             }
             else{
                 console.log(response.data.error);

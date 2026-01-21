@@ -1,18 +1,38 @@
-import { useNavigate } from "react-router";
-import { useAuth } from "../auth/AuthContext"
+import { useEffect, useState } from "react";
+import { Outlet } from "react-router";
+import Sidebar from "../components/Sidebar";
+import { useParams } from "react-router";
+import { getTeam } from "../api/team.api";
+
 
 export default function Dashboard(){
-    const {user, LogOut} = useAuth();
-    const navigate = useNavigate();
-    const logoutHandler = () => {
-        LogOut();
-        navigate("/login");
+    const {teamId} = useParams();
+    const [team, setTeam] = useState(null);
+
+    const currentTeam = async () => {
+        const response = await getTeam(teamId as string);
+        if(response.success){
+            console.log(response);
+            setTeam(response.data);
+        }
+        else{
+            console.log("fails");
+        }
+        
+    }
+    useEffect(() => {
+        currentTeam();
+    },[]);
+    if(!team){
+        return;
     }
     return (
-        <div>
-            Hi {user?.name}
-
-            <button onClick={logoutHandler}>Logout</button>
+        <div className="flex">
+            <Sidebar team={team} />
+            <main>
+                <Outlet context={{team}}/>
+            </main>
+            
         </div>
     )
 }

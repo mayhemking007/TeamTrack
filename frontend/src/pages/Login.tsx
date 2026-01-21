@@ -19,7 +19,7 @@ export default function Login(){
             });
             if(response.success){
                 setLoading(false);
-                navigate("/dashboard");
+                navigate("/post-login");
             }
             else{
                 console.log(response.data.error);
@@ -40,7 +40,7 @@ export default function Login(){
         passRef.current!.type = val === "password" ? "text" : "password";
     }
     if(user){
-        return <Navigate to="/dashboard" replace/>
+        return <Navigate to="/post-login" replace/>
     }
     if(loading){
         return(
