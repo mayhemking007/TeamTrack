@@ -17,3 +17,7 @@ export const getTeam = async(teamId : string) => {
     return response.data;
 
 }
+export const getDashState = async(teamId : string) => {
+    const response = await authClient.get(`/teams/${teamId}/dash-stats`);
+    return response.data.data;
+}

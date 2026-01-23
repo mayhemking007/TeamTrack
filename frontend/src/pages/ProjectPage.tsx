@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router";
+import { NavLink, useOutletContext } from "react-router";
 import Navbar from "../components/Navbar";
 
 type DashboardContext = {
@@ -11,6 +11,8 @@ export default function ProjectPage(){
         <div>
             <Navbar teamName={team.name} heading="Projects" subLine="Work on all your projects"/>
             Welcome to Project Page
+            <br />
+            <NavLink to={`/dashboard/teams/${team._id}/projects/new`}>Create Project</NavLink>
         </div>
     )
 }

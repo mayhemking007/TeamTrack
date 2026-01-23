@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { authMiddleware } from "../middleware/auth.js";
-import { TeamMemberModel, TeamModel } from "../db/Model.js";
+import { ProjectModel, TaskModel, TeamMemberModel, TeamModel } from "../db/Model.js";
 import {z} from "zod";
 import { AdminMiddleware } from "../middleware/admin.js";
 
@@ -163,3 +163,105 @@ teamRouter.delete('/:teamId', AdminMiddleware, async (req, res) => {
         });
     }
 });
+
+teamRouter.get('/:teamId/dash-stats', async (req, res) => {
+    const teamId = req.params.teamId;
+    const userId = req.userId;
+    let numProjects = 0;
+    let numAllTasks = 0;
+    let numMyTasks = 0;
+    let numDoneTasks = 0;
+    try{
+        const project = await ProjectModel.find({
+            teamId : teamId,
+            status : "active"
+        });
+        if(project){
+            numProjects = project.length;
+        }
+        else{
+            console.log("No project found in the team for dash-stats");
+            numProjects = 0;
+        }
+        const allTasks = await TaskModel.find({
+            teamId : teamId,
+            status : "active"
+        });
+        if(allTasks){
+            numAllTasks = allTasks.length;
+        }
+        else{
+            console.log("No tasks found in the team for dash-stats");
+            numAllTasks = 0;
+        }
+        const myTasks = await TaskModel.find({
+            teamId : teamId,
+            assignedTo : userId!,
+            status : "active"
+        });
+        if(myTasks){
+            numMyTasks = myTasks.length;
+        }
+        else{
+            console.log("No my tasks found in the team for dash-stats");
+            numMyTasks = 0;
+        }
+        const doneTasks = await TaskModel.find({
+            teamId : teamId,
+            status : "done",
+            assignedTo : userId!
+        });
+        if(doneTasks){
+            numDoneTasks = doneTasks.length;
+        }
+        else{
+            console.log("No done tasks found in the team for dash-stats");
+            numDoneTasks = 0;
+        }
+
+        res.json({
+            success : true,
+            data : {
+                numAllTasks : numAllTasks,
+                numDoneTasks : numDoneTasks,
+                numMyTasks : numMyTasks,
+                numProjects : numProjects
+            }
+        })
+
+    }
+    catch(e){
+        console.log(e);
+        res.status(501).json({
+            success : false,
+            error : "Cannot GET dash-stats. Please try again later."
+        })
+    }
+});
+
+teamRouter.get('/:teamId/team-members', async (req, res) => {
+    const teamId = req.params.teamId;
+    try{
+        const teamMembers = await TeamMemberModel.find({
+            teamId : teamId
+        }).populate("userId");
+        if(teamMembers){
+            res.json({
+                success : true,
+                data : teamMembers
+            });
+        } else{
+            res.status(401).json({
+                success : false,
+                error : "The team does not exists."
+            })
+        }
+    }
+    catch(e){
+        console.log(e);
+        res.status(501).json({
+            success : false,
+            error : "Cannot GET the team members."
+        })
+    }
+})
