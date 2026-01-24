@@ -11,6 +11,7 @@ import PostLoginRedirect from "./pages/PostLoginRedirect";
 import NoTeamPage from "./pages/NoTeamPage";
 import CreateTask from "./pages/CreateTask";
 import CreateProject from "./pages/CreateProject";
+import SingleProjectPage from "./pages/SingleProjectPage";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
       </Route>
       <Route path="/dashboard/teams/:teamId/projects/:projectId/sprints/:sprintId/tasks/new" element={<CreateTask />} />
       <Route path="/dashboard/teams/:teamId/projects/new" element={<CreateProject />} />
+      <Route path="/dashboard/teams/:teamId/projects/:projectId" element={<SingleProjectPage />} />
 
     </Routes>
     

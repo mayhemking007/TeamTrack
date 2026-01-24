@@ -36,7 +36,7 @@ export default function HomePage(){
                 <div className="border-1 w-120 mt-25 ml-15 p-4">
                     <h3>Assigned Tasks</h3>
                     <div>
-                        <NavLink to="" >Project</NavLink>
+                        <NavLink to="" >Task-1</NavLink>
                     </div>
                 </div>
                 <div className="border-1 w-120 mt-25 ml-15 p-4">

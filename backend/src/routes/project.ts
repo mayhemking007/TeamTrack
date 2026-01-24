@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import {z} from "zod";
-import { ProjectModel } from "../db/Model.js";
+import { ProjectModel, SprintModel, TaskModel } from "../db/Model.js";
 import { authMiddleware } from "../middleware/auth.js";
 import { teamMiddleware } from "../middleware/team.js";
 import { AdminMiddleware } from "../middleware/admin.js";
@@ -166,3 +166,50 @@ projectRouter.delete('/:projectId', teamMiddleware, AdminMiddleware ,async (req,
     }
 
 });
+
+projectRouter.get('/teams/:teamId/projects/:projectId/dash-stats', async (req, res) => {
+    let numSprints = 0;
+    let numTasks = 0;
+    const teamId = req.params.teamId;
+    const projectId = req.params.projectId;
+
+    try{
+        const sprints = await SprintModel.find({
+            projectId : projectId,
+            status : "active"
+        });
+        if(sprints){
+            numSprints = sprints.length;
+        }
+        else{
+            console.log("Project not found.")
+            numSprints = 0
+        }
+        const tasks = await TaskModel.find({
+            projectId : projectId
+        })
+        if(tasks){
+            numTasks = tasks.length;
+        }
+        else{
+            console.log("Project not found.")
+            numTasks = 0;
+        }
+        
+        res.json({
+            success : true,
+            data : {
+                numSprints : numSprints,
+                numTasks : numTasks
+            }
+        });
+        
+    }
+    catch(e){
+        console.log(e);
+        res.status(501).json({
+            success : false,
+            error : "Cannot GET the project dash stats. Please try later."
+        })
+    }
+})
