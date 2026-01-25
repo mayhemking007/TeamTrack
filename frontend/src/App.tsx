@@ -12,6 +12,8 @@ import NoTeamPage from "./pages/NoTeamPage";
 import CreateTask from "./pages/CreateTask";
 import CreateProject from "./pages/CreateProject";
 import SingleProjectPage from "./pages/SingleProjectPage";
+import CreateSprint from "./pages/CreateSprintPage";
+import SingleSprintPage from "./pages/SingleSprintPage";
 
 function App() {
   return (
@@ -39,7 +41,8 @@ function App() {
       <Route path="/dashboard/teams/:teamId/projects/:projectId/sprints/:sprintId/tasks/new" element={<CreateTask />} />
       <Route path="/dashboard/teams/:teamId/projects/new" element={<CreateProject />} />
       <Route path="/dashboard/teams/:teamId/projects/:projectId" element={<SingleProjectPage />} />
-
+      <Route path="/dashboard/teams/:teamId/projects/:projectId/sprints/new" element={<CreateSprint />} />
+      <Route path="/dashboard/teams/:teamId/projects/:projectId/sprints/:sprintId" element={<SingleSprintPage />} />
     </Routes>
     
 
