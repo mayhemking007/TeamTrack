@@ -1,6 +1,6 @@
 import  express, { Router } from "express";
 import {z} from "zod";
-import { ProjectModel, SprintModel } from "../db/Model.js";
+import { ProjectModel, SprintModel, TaskModel } from "../db/Model.js";
 import { teamMiddleware } from "../middleware/team.js";
 import { AdminMiddleware } from "../middleware/admin.js";
 import { authMiddleware } from "../middleware/auth.js";
@@ -190,3 +190,49 @@ sprintRouter.delete('/:sprintId', teamMiddleware, AdminMiddleware ,async (req, r
     }
 
 });
+
+sprintRouter.get("/:sprintId/sprint-stats", async (req, res) => {
+    const sprintId = req.params.sprintId;
+    const userId = req.userId;
+    let numTasks = 0;
+    let numAssignedTasks = 0;
+    try{
+        const tasks = await TaskModel.find({
+            sprintId : sprintId,
+            status : "active"
+        });
+        if(tasks){
+            numTasks = tasks.length;
+        }
+        else{
+            console.log("No tasks found with the sprintId");
+            numTasks = 0;
+        }
+        const assignTasks = await TaskModel.find({
+            sprintId : sprintId,
+            status : "active",
+            assignedTo : userId!
+        });
+        if(assignTasks){
+            numAssignedTasks = assignTasks.length;
+        }
+        else{
+            console.log("No tasks found with the sprintId");
+            numAssignedTasks = 0;
+        }
+        res.json({
+            success : true,
+            data : {
+                numTasks : numTasks,
+                numAssignedTasks : numAssignedTasks
+            }
+        });
+    }
+    catch(e){
+        console.log(e);
+        res.status(502).json({
+            success : false,
+            error : "Cannot GET stats. Please try again."
+        });
+    }
+})
