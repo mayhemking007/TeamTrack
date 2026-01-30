@@ -40,6 +40,9 @@ export const TaskSchema = new Schema({
     sprintId : {type : ObjectId, ref : "sprint"},
     projectId : {type : ObjectId, ref : "project"},
     teamId : {type : ObjectId, ref : "team"},
+},
+{
+    timestamps : true,
 })
 export const CommentSchema = new Schema({
     content : String,

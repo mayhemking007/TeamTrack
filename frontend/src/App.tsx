@@ -38,7 +38,7 @@ function App() {
       <Route path="project" element={<ProjectPage />} />
       <Route path="team-member" element={<TeamMemberPage />} />
       </Route>
-      <Route path="/dashboard/teams/:teamId/projects/:projectId/sprints/:sprintId/tasks/new" element={<CreateTask />} />
+      <Route path="/dashboard/teams/:teamId/sprints/:sprintId/tasks/new" element={<CreateTask />} />
       <Route path="/dashboard/teams/:teamId/projects/new" element={<CreateProject />} />
       <Route path="/dashboard/teams/:teamId/projects/:projectId" element={<SingleProjectPage />} />
       <Route path="/dashboard/teams/:teamId/projects/:projectId/sprints/new" element={<CreateSprint />} />

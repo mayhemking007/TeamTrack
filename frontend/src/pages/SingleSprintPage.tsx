@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router";
+import { NavLink, useParams } from "react-router";
 import { getSprintStats } from "../api/sprint.api";
 import StateCard from "../components/StateCard";
 
 export default function SingleSprintPage(){
     const [stats, setStats] = useState<any>(null);
     const [loading, setLoading] = useState(false);
-    const {sprintId} = useParams();
+    const {sprintId, teamId} = useParams();
     
     useEffect(() => {
         setLoading(true);
@@ -27,6 +27,7 @@ export default function SingleSprintPage(){
                 <StateCard value= {stats.numTasks} title ="Tasks in the Sprint" />
                 <StateCard value= {stats.numAssignedTasks} title ="Assigned Tasks in the Sprint." />
             </div>
+            <NavLink to={`/dashboard/teams/${teamId}/sprints/${sprintId}/tasks/new`} >Create Tasks</NavLink>
         </div>
     )
 }

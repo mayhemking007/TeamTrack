@@ -4,10 +4,16 @@ export const createTask = async (payload : {
     title : string,
     description : string,
     priority : string,
-    assignedTo : string,
-    assignedBy : string,
+    assignedTo : any,
+    assignedBy : any,
     sprintId : string
 }) => {
-    const response = await authClient.post(`sprints/${payload.sprintId}/tasks`, payload);
+    console.log(payload.assignedTo);
+    const response = await authClient.post(`tasks/sprints/${payload.sprintId}/tasks`, payload);
+    return response.data;
+}
+
+export const getTasksFiltered = async (teamId : string, projectId : string, sprintId : string, page : number, limit : number, assignTo : string) => {
+    const response = await authClient.get(`tasks/teams/${teamId}/tasks?projectId=${projectId}&sprintId=${sprintId}&assignTo=${assignTo}&page=${page}&limit=${limit}`);
     return response.data;
 }

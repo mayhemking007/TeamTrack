@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
 import { createTask } from "../api/task.api";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { getTeamMember } from "../api/teamMember.api";
 
 export default function CreateTask(){
     const {sprintId, teamId} = useParams();
-
+    const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [Description, setDescription] = useState("");
-    const [assignedTo, setAssignedTo] = useState("");
-    const [assignedBy, setAssignedBy] = useState("");
+    const [assignedTo, setAssignedTo] = useState<any>(null);
+    const [assignedBy, setAssignedBy] = useState<any>(null);
     const [priority, setPriority] = useState("medium");
     const [teamMember, setTeamMember] = useState([]);
 
@@ -21,7 +21,9 @@ export default function CreateTask(){
             assignedTo : assignedTo,
             priority : priority,
             sprintId : sprintId as string
-        })
+        });
+        navigate(-1);
+
     }
     
     useEffect(() => {
@@ -40,19 +42,27 @@ export default function CreateTask(){
             </div>
             <div>
                 <label>Assigned To</label>
-                <select onChange={(e) => setAssignedTo(e.target.value)}>
+                <select onChange={(e) => setAssignedTo(e.target.value || null)}>
                     <option>Select the team member</option>
                     {
                         teamMember.length === 0 ? <></> :
                         teamMember.map((mem : any) => (
-                            <option value={mem.id} key={mem.id}>{mem.userId.name}</option>
+                            <option value={mem._id} key={mem._id}>{mem.userId.name}</option>
                         )) 
                     }
                 </select>
             </div>
             <div>
                 <label>Assigned By</label>
-                <input type="text" className="border rounded-lg px-2 py-1" onChange={(e) => setAssignedBy(e.target.value)}/>
+                <select onChange={(e) => setAssignedBy(e.target.value)}>
+                    <option>Select the team member</option>
+                    {
+                        teamMember.length === 0 ? <></> :
+                        teamMember.map((mem : any) => (
+                            <option value={mem._id} key={mem._id}>{mem.userId.name}</option>
+                        )) 
+                    }
+                </select>
             </div>
             <div>
                 <label>Priority</label>

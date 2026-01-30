@@ -1,6 +1,6 @@
 import  express, { Router } from "express";
 import {z} from "zod";
-import { ProjectModel, SprintModel, TaskModel } from "../db/Model.js";
+import { ProjectModel, SprintModel, TaskModel, TeamMemberModel } from "../db/Model.js";
 import { teamMiddleware } from "../middleware/team.js";
 import { AdminMiddleware } from "../middleware/admin.js";
 import { authMiddleware } from "../middleware/auth.js";
@@ -14,8 +14,6 @@ taskRouter.post('/sprints/:sprintId/tasks', AdminMiddleware, teamMiddleware, asy
     const reqBody = z.object({
         title : z.string().min(3).max(50),
         description : z.string().min(3).max(1000),
-        assignedBy : z.string().min(3).max(50),
-        assignedTo : z.string().min(3).max(50),
         priority : z.string().min(1).max(10)
     });
     const parsedBody = reqBody.safeParse(req.body);
@@ -30,8 +28,9 @@ taskRouter.post('/sprints/:sprintId/tasks', AdminMiddleware, teamMiddleware, asy
     const title = req.body.title;
     const description = req.body.description;
     const priority = req.body.priority;
-    const assignBy = req.body.assignBy;
-    const assignTo = req.body.assignTo;
+    const assignedBy = req.body.assignedBy;
+    const assignedTo = req.body.assignedTo;
+    console.log("assign To = " + assignedTo);
     let thisProject = null;
     try{
         
@@ -66,8 +65,8 @@ taskRouter.post('/sprints/:sprintId/tasks', AdminMiddleware, teamMiddleware, asy
             title : title,
             description : description,
             priority : priority,
-            assignedBy : assignBy,
-            assignedTo : assignTo,
+            assignedBy : assignedBy,
+            assignedTo : assignedTo,
             status : "active",
             sprintId : sprintId as string,
             projectId : sprint!.projectId!,
@@ -215,4 +214,69 @@ taskRouter.delete('/:taskId', teamMiddleware, AdminMiddleware ,async (req, res) 
 
 });
 
-// taskRouter.get('/tasks')
+taskRouter.get('/teams/:teamId/tasks', async(req, res) => {
+    const {projectId, sprintId, assignTo, page, limit} = req.query;
+    const teamId = req.params.teamId;
+    const filter : any = {
+        teamId : teamId
+    }
+    if(projectId != "null"){
+        filter.projectId = projectId;
+    }
+    if(sprintId != "null"){
+        filter.sprintId = sprintId;
+    }
+    if(assignTo === "me"){
+        try{
+            const teamMember = await TeamMemberModel.findOne({
+                userId : req.userId!,
+                teamId : teamId
+            });
+            if(teamMember){
+                filter.assignedTo = teamMember._id;
+            }
+            else{
+                res.status(403).json({
+                    success : false,
+                    error : "Cannot find teamMember from userId"
+                });
+                return;
+            }
+            
+        }
+        catch(e){
+            res.status(503).json({
+                success : false,
+                error : "Cannot GET teamMember from userId"
+            });
+            return;
+        }
+        
+    }
+    const pageNumber = Number(page) || 1;
+    const pageLimit = Number(limit) || 10;
+    const skip = (pageNumber - 1) * pageLimit;
+    try{
+        const tasks = await TaskModel.find(filter).skip(skip).limit(pageLimit).sort({createdAt : -1} as any)
+        if(tasks){
+            const total = await TaskModel.countDocuments(filter);
+            res.json({
+                success : true,
+                data :  tasks,
+                pagination : {
+                    page : pageNumber,
+                    limit : pageLimit,
+                    total : total,
+                    totalPages : Math.ceil(total / pageLimit)
+                }
+            });
+        }
+    }
+    catch(e){
+        console.log(e);
+        res.status(503).json({
+            success : false,
+            error : "Cannot GET filter tasks. Please try again later."
+        })
+    }
+});
