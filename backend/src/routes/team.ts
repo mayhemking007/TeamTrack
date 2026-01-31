@@ -194,9 +194,17 @@ teamRouter.get('/:teamId/dash-stats', async (req, res) => {
             console.log("No tasks found in the team for dash-stats");
             numAllTasks = 0;
         }
+        const teamMember = await TeamMemberModel.findOne({
+            teamId : teamId,
+            userId : userId!
+        });
+        if(!teamMember){
+            console.log("team member not found for team-dash-stats");
+            return;
+        }
         const myTasks = await TaskModel.find({
             teamId : teamId,
-            assignedTo : userId!,
+            assignedTo : teamMember._id!,
             status : "active"
         });
         if(myTasks){
@@ -209,7 +217,7 @@ teamRouter.get('/:teamId/dash-stats', async (req, res) => {
         const doneTasks = await TaskModel.find({
             teamId : teamId,
             status : "done",
-            assignedTo : userId!
+            assignedTo : teamMember._id!
         });
         if(doneTasks){
             numDoneTasks = doneTasks.length;

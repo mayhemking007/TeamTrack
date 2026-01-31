@@ -21,8 +21,9 @@ export default function Dashboard(){
         
     }
     useEffect(() => {
+        if(!teamId) return;
         currentTeam();
-    },[]);
+    },[teamId]);
     if(!team){
         return;
     }

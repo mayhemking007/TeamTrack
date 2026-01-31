@@ -13,10 +13,11 @@ export default function HomePage(){
     const [stats, setStats] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     useEffect(() => {
+        if(!team._id) return;
         setLoading(true);
         getDashState(team._id).then(setStats);
         setLoading(false);
-    }, []);
+    }, [team._id]);
     if(loading){
         return <div>Loading....</div>
     }
