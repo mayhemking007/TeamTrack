@@ -280,3 +280,31 @@ taskRouter.get('/teams/:teamId/tasks', async(req, res) => {
         })
     }
 });
+
+taskRouter.get('/:taskId', async (req, res) => {
+    const taskId = req.params.taskId;
+    try{
+        const task = await TaskModel.findOne({
+            _id : taskId
+        });
+        if(task){
+            res.json({
+                success : true,
+                data : task
+            });
+        }
+        else {
+            res.status(403).json({
+                success : false,
+                error : "Invalid task id. Cannot GET task."
+            });
+        }
+    }
+    catch(e){
+        console.log(e);
+        res.status(502).json({
+            success : false,
+            error : "Cannot GET task from taskId. Please try later"
+        })
+    }
+})

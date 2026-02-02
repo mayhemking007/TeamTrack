@@ -1,4 +1,4 @@
-import { useOutletContext} from "react-router";
+import { NavLink, useOutletContext} from "react-router";
 import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { getProjects } from "../api/project.api";
@@ -87,7 +87,7 @@ export default function TaskPage(){
                     {
                         tasks.map((t : any) => (
                             <div key={t._id} className="flex justify-evenly bg-yellow-300">
-                                <p>{t.title}</p>
+                                <NavLink to={`/dashboard/teams/${team._id}/tasks/${t._id}`}>{t.title}</NavLink>
                                 <p>{t.priority}</p>
                                 <p>{t.assignedTo}</p>
                             </div>

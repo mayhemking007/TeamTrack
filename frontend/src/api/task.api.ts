@@ -17,3 +17,8 @@ export const getTasksFiltered = async (teamId : string, projectId : string, spri
     const response = await authClient.get(`tasks/teams/${teamId}/tasks?projectId=${projectId}&sprintId=${sprintId}&assignTo=${assignTo}&page=${page}&limit=${limit}`);
     return response.data;
 }
+
+export const getTask = async (taskId : string) => {
+    const response = await authClient.get(`/tasks/${taskId}`);
+    return response.data;
+}

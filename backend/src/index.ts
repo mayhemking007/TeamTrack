@@ -7,6 +7,7 @@ import { projectRouter } from "./routes/project.js";
 import { sprintRouter } from "./routes/sprint.js";
 import { taskRouter } from "./routes/task.js";
 import cors from "cors";
+import { commentRouter } from "./routes/comment.js";
 
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use('/teams', teamRouter);
 app.use('/projects', projectRouter);
 app.use('/sprints', sprintRouter);
 app.use('/tasks', taskRouter);
+app.use('/comments', commentRouter);
 async function main(){
     await mongoose.connect(process.env.DB_URL as string);
     app.listen(3000, () => console.log("Server is listening at port 3000"))
