@@ -15,7 +15,6 @@ export default function Sidebar(props : teamInterface){
         setTeamId(props.team._id);
         getTeams().then(setTeams);
     }, [props.team._id]);
-    console.log(teams);
     if(!teams){
         return <div>No teams</div>
     }

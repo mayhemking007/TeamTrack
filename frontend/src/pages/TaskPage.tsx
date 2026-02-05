@@ -86,7 +86,7 @@ export default function TaskPage(){
                 <div>
                     {
                         tasks.map((t : any) => (
-                            <div key={t._id} className="flex justify-evenly bg-yellow-300">
+                            <div key={t._id} className="flex justify-evenly bg-blue-200">
                                 <NavLink to={`/dashboard/teams/${team._id}/tasks/${t._id}`}>{t.title}</NavLink>
                                 <p>{t.priority}</p>
                                 <p>{t.assignedTo}</p>

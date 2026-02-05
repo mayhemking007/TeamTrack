@@ -15,6 +15,7 @@ export const createTask = async (payload : {
 
 export const getTasksFiltered = async (teamId : string, projectId : string, sprintId : string, page : number, limit : number, assignTo : string) => {
     const response = await authClient.get(`tasks/teams/${teamId}/tasks?projectId=${projectId}&sprintId=${sprintId}&assignTo=${assignTo}&page=${page}&limit=${limit}`);
+    console.log(response.data);
     return response.data;
 }
 

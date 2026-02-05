@@ -40,12 +40,12 @@ function App() {
       <Route path="project" element={<ProjectPage />} />
       <Route path="team-member" element={<TeamMemberPage />} />
       <Route path="tasks/:taskId" element={<SingleTaskPage />} />
+      <Route path="projects/:projectId/sprints/new" element={<CreateSprint />} />
+      <Route path="sprints/:sprintId/tasks/new" element={<CreateTask />} />
+      <Route path="projects/new" element={<CreateProject />} />
+      <Route path="projects/:projectId" element={<SingleProjectPage />} />
+       <Route path="projects/:projectId/sprints/:sprintId" element={<SingleSprintPage />} />
       </Route>
-      <Route path="/dashboard/teams/:teamId/sprints/:sprintId/tasks/new" element={<CreateTask />} />
-      <Route path="/dashboard/teams/:teamId/projects/new" element={<CreateProject />} />
-      <Route path="/dashboard/teams/:teamId/projects/:projectId" element={<SingleProjectPage />} />
-      <Route path="/dashboard/teams/:teamId/projects/:projectId/sprints/new" element={<CreateSprint />} />
-      <Route path="/dashboard/teams/:teamId/projects/:projectId/sprints/:sprintId" element={<SingleSprintPage />} />
       <Route path="/dashboard/teams/new" element={<CreateTeam />} />
     </Routes>
     

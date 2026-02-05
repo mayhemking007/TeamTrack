@@ -286,7 +286,21 @@ taskRouter.get('/:taskId', async (req, res) => {
     try{
         const task = await TaskModel.findOne({
             _id : taskId
-        });
+        }).populate([{
+            path : "assignedTo",
+            populate : {
+                path : "userId",
+                select : "name username email"
+            }
+        },
+        {
+            path : "assignedBy",
+            populate : {
+                path : "userId",
+                select : "name username email"
+            }
+        }
+    ]);
         if(task){
             res.json({
                 success : true,

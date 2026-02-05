@@ -1,17 +1,21 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/auth.js";
 import { teamMiddleware } from "../middleware/team.js";
+import express from "express";
 import { CommentModel, TeamMemberModel } from "../db/Model.js";
 import {z} from "zod";
 
 export const commentRouter = Router();
 
+commentRouter.use(express.json());
 commentRouter.use(authMiddleware);
-commentRouter.use(teamMiddleware);
 
-commentRouter.post('/tasks/:taskId/comment', async(req, res) => {
+
+commentRouter.post('/tasks/:taskId/comment', teamMiddleware, async(req, res) => {
+    
     const reqBody = z.object({
             content : z.string().min(3),
+            teamId : z.string()
     });
     const valid = reqBody.safeParse(req.body);
     if(!valid.success){
@@ -19,6 +23,7 @@ commentRouter.post('/tasks/:taskId/comment', async(req, res) => {
             success : false,
             error : valid.error.issues[0]?.message
         })
+        return;
     }
     const content = req.body.content;
     const teamId = req.body.teamId;
@@ -41,7 +46,7 @@ commentRouter.post('/tasks/:taskId/comment', async(req, res) => {
         const comment = await CommentModel.create({
             content : content,
             createdAt : date,
-            taskId : taskId,
+            taskId : taskId as string,
             commentedBy : teamMember._id
         });
         if(comment){
@@ -66,11 +71,11 @@ commentRouter.post('/tasks/:taskId/comment', async(req, res) => {
     }
 });
 
-commentRouter.get('/tasks/:taskId/comment', async (req, res) => {
+commentRouter.get('/tasks/:taskId/comment', teamMiddleware, async (req, res) => {
     const taskId = req.params.taskId;
     try{
         const comments = await CommentModel.find({
-            taskId : taskId
+            taskId : taskId!
         }).populate({
             path : "commentedBy",
             populate : {
