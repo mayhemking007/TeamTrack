@@ -52,38 +52,105 @@ export default function Signup(){
         )
     }
     return (
-        <div className="bg-blue-200 h-screen flex items-center justify-center">
-            <div className="bg-white rounded-lg border-1 shadow-md w-120 h-85 px-4 py-4">
-                <h1>Sign Up</h1>
+       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+            <div className="bg-slate-900 border border-slate-700 rounded-xl shadow-xl w-[30rem] px-8 py-8">
+
+                <h1 className="text-3xl font-bold text-white text-center mb-8">
+                Sign Up
+                </h1>
+
                 <div>
-                    <div>
-                        <label>Name</label>
-                        <input type="text" onChange={(e) => {
-                            setName(e.target.value)
-                        }} name="name" id="name" placeholder="e.g. John Doe" className="border-1 rounded-md mx-4 my-4 px-2 py-1" />
-                    </div>
-                    <div>
-                        <label>Email</label>
-                        <input type="email" onChange={(e) => {
-                            setEmail(e.target.value)
-                        }} name="email" id="email" placeholder="example@mail.com" className="border-1 rounded-md mx-4 my-4 px-2 py-1" />
-                    </div>
-                    <div>
-                        <label>Username</label>
-                        <input type="text" onChange={(e) => {
-                            setUsername(e.target.value)
-                        }} name="username" id="username" placeholder="Username" className="border-1 rounded-md mx-4 my-4 px-2 py-1"/>
-                    </div>
-                    <div>
-                        <label>Password</label>
-                        <input type="password" onChange={(e) => {
-                            setPassword(e.target.value)
-                        }} name="password" id="password" ref={passRef} placeholder="Write Your Password" className="border-1 rounded-md mx-4 my-4 px-2 py-1" />
-                        <button onClick={passwordToggle}>Show</button>
+                <div className="mb-5">
+                    <label className="block text-slate-300 mb-2 text-sm">
+                    Name
+                    </label>
+                    <input
+                    type="text"
+                    onChange={(e) => {
+                        setName(e.target.value);
+                    }}
+                    name="name"
+                    id="name"
+                    placeholder="e.g. John Doe"
+                    className="w-full rounded-md bg-slate-800 border border-slate-600 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+
+                <div className="mb-5">
+                    <label className="block text-slate-300 mb-2 text-sm">
+                    Email
+                    </label>
+                    <input
+                    type="email"
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                    }}
+                    name="email"
+                    id="email"
+                    placeholder="example@mail.com"
+                    className="w-full rounded-md bg-slate-800 border border-slate-600 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+
+                <div className="mb-5">
+                    <label className="block text-slate-300 mb-2 text-sm">
+                    Username
+                    </label>
+                    <input
+                    type="text"
+                    onChange={(e) => {
+                        setUsername(e.target.value);
+                    }}
+                    name="username"
+                    id="username"
+                    placeholder="Username"
+                    className="w-full rounded-md bg-slate-800 border border-slate-600 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+
+                <div className="mb-6">
+                    <label className="block text-slate-300 mb-2 text-sm">
+                    Password
+                    </label>
+                    <div className="flex gap-2">
+                    <input
+                        type="password"
+                        onChange={(e) => {
+                        setPassword(e.target.value);
+                        }}
+                        name="password"
+                        id="password"
+                        ref={passRef}
+                        placeholder="Write Your Password"
+                        className="flex-1 rounded-md bg-slate-800 border border-slate-600 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <button
+                        onClick={passwordToggle}
+                        className="px-3 py-2 text-sm rounded-md bg-slate-700 text-slate-200 hover:bg-slate-600 transition"
+                    >
+                        Show
+                    </button>
                     </div>
                 </div>
-                <button onClick={submitHandler} type="submit">Submit</button>
+                </div>
+
+                <button
+                onClick={submitHandler}
+                type="submit"
+                className="w-full mt-2 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-2 rounded-md transition"
+                >
+                Submit
+                </button>
+
+                <p className="text-center text-slate-400 text-sm mt-6">
+                Already signed up?{" "}
+                <a href="/login" className="text-indigo-400 hover:underline">
+                    Login here
+                </a>
+                </p>
+
             </div>
-        </div>
+         </div>
+
     )
 }

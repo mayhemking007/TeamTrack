@@ -16,11 +16,13 @@ import CreateSprint from "./pages/CreateSprintPage";
 import SingleSprintPage from "./pages/SingleSprintPage";
 import CreateTeam from "./pages/CreateTeam";
 import SingleTaskPage from "./pages/SingleTaskPage";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
     <BrowserRouter>
     <Routes>
+      <Route path={"/"} element={<LandingPage />}></Route>
       <Route path={"/login"} element={<Login />} />
 
       <Route path={"/signup"} element={<Signup />} />
