@@ -45,54 +45,107 @@ export default function SingleTaskPage(){
         return <div>No Comments</div>
     }
     return(
-        <div>
+        <div className="flex-1 flex flex-col bg-slate-900 text-slate-200">
+    
             <Navbar teamName={team.name} heading="Task" subLine="Work on task here"/>
-            <h1 className="font-bold text-4xl ml-40 m-10">{task.data.title}</h1>
-            <div className="flex justify-evenly gap-120  m-10">
-                <div>
-                    <div className="flex justify-between gap-10 m-15">
-                        <div className="flex gap-2">
-                            <p>Priority:</p>
-                            <p>{task.data.priority}</p>
+
+            <div className="p-8 space-y-8">
+
+                <h1 className="font-bold text-3xl text-white">
+                    {task.data.title}
+                </h1>
+
+                <div className="grid grid-cols-3 gap-10">
+
+                   
+                    <div className="col-span-2 space-y-8">
+
+                        <div className="flex gap-10 bg-slate-800 border border-slate-700 p-6 rounded-xl">
+                            <div className="flex gap-2">
+                                <p className="text-slate-400">Priority:</p>
+                                <p className="font-medium">{task.data.priority}</p>
+                            </div>
+                            <div className="flex gap-2">
+                                <p className="text-slate-400">Status:</p>
+                                <p className="font-medium">{task.data.status}</p>
+                            </div>
                         </div>
-                        <div className="flex gap-2">
-                            <p>Status:</p>
-                            <p>{task.data.status}</p>
+
+                        <div className="bg-slate-800 border border-slate-700 p-6 rounded-xl space-y-4">
+                            <h3 className="font-semibold text-lg text-white">Description</h3>
+                            
+                            <div className="bg-slate-700 border border-slate-600 rounded-md p-4" >
+                                    {task.data.description}
+                            </div>
                         </div>
+
+                      
+                        <div className="bg-slate-800 border border-slate-700 p-6 rounded-xl space-y-4">
+                            <h3 className="font-semibold text-lg text-white">Comments</h3>
+                            {
+                                comments.map((com : any) => (
+                                    <div className="bg-slate-700 border border-slate-600 rounded-md p-4" key={com._id}>
+                                        <h3 className="font-semibold text-indigo-400">
+                                            {com.commentedBy.userId.name}
+                                        </h3>
+                                        <div className="text-slate-300 mt-1">
+                                            {com.content}
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+                      
+                        <div className="bg-slate-800 border border-slate-700 p-6 rounded-xl space-y-4">
+                            <textarea
+                                value={content}
+                                id="content"
+                                onChange={(e) => setContent(e.target.value)}
+                                className="w-full h-40 bg-slate-700 border border-slate-600 rounded-md p-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                placeholder="Write comment..."
+                            />
+                            <div className="flex justify-end">
+                                <button
+                                    onClick={submitHandler}
+                                    className="px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-md transition"
+                                >
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
-                    <div>
-                        {task.data.description}
+
+                   
+                    <div className="bg-slate-800 border border-slate-700 p-6 rounded-xl space-y-6">
+
+                        <div>
+                            <label className="block text-slate-400 mb-1">Assigned To</label>
+                            <select className="w-full bg-slate-700 border border-slate-600 rounded-md px-3 py-2">
+                                <option>{task.data.assignedTo.userId.name}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-slate-400 mb-1">Assigned By</label>
+                            <select className="w-full bg-slate-700 border border-slate-600 rounded-md px-3 py-2">
+                                <option>{task.data.assignedBy.userId.name}</option>
+                            </select>
+                        </div>
+
+                        <div className="text-sm text-slate-400 space-y-2 pt-4 border-t border-slate-700">
+                            <p>Created At: {task.data.createdAt}</p>
+                            <p>Updated At: {task.data.updatedAt}</p>
+                        </div>
+
                     </div>
-                    <div>
-                        {   
-                            comments.map((com : any) => (
-                                <div className="border-1 rounded-md p-2 ml-5" key={com._id}>
-                                    <h3 className="font-semibold">{com.commentedBy.userId.name}</h3>
-                                    <div>{com.content}</div>
-                                </div>
-                            ))
-                        }
-                    </div>
-                    <div>
-                        <textarea value={content} id="content" onChange={(e) => setContent(e.target.value)} className="border-1 shadow-lg w-140 h-60 rounded-lg mt-20 m-8 p-5 focus:outline-none" placeholder="Write comment..."/>
-                        <button onClick={submitHandler} className="ml-125 bg-blue-600 text-white cursor-pointer font-semibold w-20 rounded-md">Add</button>
-                    </div>
-                </div>
-                <div>
-                    <label>Assigned To: </label>
-                    <select>
-                        <option>{task.data.assignedTo.userId.name}</option>
-                    </select>
-                    <label>Assigned By: </label>
-                    <select>
-                        <option>{task.data.assignedBy.userId.name}</option>
-                    </select>
-                    
-                    <p>Created At: {task.data.createdAt}</p>
-                    <p>Updated At: {task.data.updatedAt}</p>
 
                 </div>
+
             </div>
+
         </div>
+
     )
 }

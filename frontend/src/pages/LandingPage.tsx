@@ -5,7 +5,6 @@ export default function LandingPage() {
     const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100">
-      {/* Navbar */}
       <nav className="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
         <div className="text-2xl font-bold tracking-tight">
           Team<span className="text-indigo-400">Track</span>
@@ -21,7 +20,6 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-8 py-24 grid md:grid-cols-2 gap-16 items-center">
         <div>
           <h1 className="text-5xl font-extrabold leading-tight">
@@ -45,7 +43,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Hero Card */}
+
         <div className="bg-slate-800/60 backdrop-blur rounded-xl p-6 shadow-xl border border-slate-700">
           <div className="space-y-4">
             <Card title="📦 Project">
@@ -61,7 +59,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features */}
+
       <section className="max-w-7xl mx-auto px-8 py-20">
         <h2 className="text-3xl font-bold text-center mb-12">
           Everything your team needs
@@ -95,7 +93,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA */}
+
       <section className="bg-indigo-500/10 border-t border-slate-700">
         <div className="max-w-7xl mx-auto px-8 py-20 text-center">
           <h2 className="text-4xl font-bold">
@@ -116,7 +114,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
+
       <footer className="py-8 text-center text-slate-400 text-sm">
         © {new Date().getFullYear()} Team Track. All rights reserved.
       </footer>
@@ -124,7 +122,7 @@ export default function LandingPage() {
   );
 }
 
-/* ----------------- Components ----------------- */
+
 
 function Feature( {
   title,

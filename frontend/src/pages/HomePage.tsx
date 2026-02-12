@@ -40,52 +40,94 @@ export default function HomePage(){
         return <div>No stats</div>
     }
     return(
-        <div>
-            <Navbar teamName={team.name} heading="Home" subLine="Monitor all your work here"/>
-            <div className="m-5 flex justify-between">
-                <StateCard title="Total Projects" value={stats.numProjects} />
-                <StateCard title="Total Tasks" value={stats.numAllTasks} />
-                <StateCard title="Assigned Tasks" value={stats.numMyTasks} />
-                <StateCard title="Completed Tasks" value={stats.numDoneTasks} />
-            </div>
-            <div className="flex justify-between mx-20 mt-5">
-                <div className="border-1 w-120 h-60 mt-25 ml-15 p-4 rounded-lg">
-                    <h3>Assigned Tasks</h3>
-                    {
-                        assignTasks.map((t : any) => (
-                            <div key={t._id} className="flex justify-evenly bg-gray-200 border-1 rounded-sm">
-                                <NavLink to={`/dashboard/teams/${team._id}/tasks/${t._id}`}>{t.title}</NavLink>
-                                <p>{t.priority}</p>
-                            </div>
-                        ))
-                    }
-                    <div className="w-full bg-blue-200 px-2 py-1 mt-20 rounded-md flex justify-center items-center">
-                        <NavLink  to={`/dashboard/teams/${team._id}/task`}>Show All Tasks</NavLink>
-                    </div>
-                    
-                </div>
-                <div className="border-1 w-120 mt-25 ml-15 p-4">
-                    <h3>Projects</h3>
-                    {
-                        projects.map((pro : any) => (
-                            <div key={pro._id} className="w-80 h-20 m-10 mb-8 border rounded-xl shadow-lg px-5 py-5 flex items-center justify-center">
-                                <NavLink key={pro._id} to={`/dashboard/teams/${team._id}/projects/${pro._id}`}>{pro.name}</NavLink>
-                            </div>
-                        ))
-                    }
-                </div>
-            </div>
-            <div className="flex flex-col border-1 w-260 mt-10 ml-40 p-4" >
-                <h3>Team Members</h3>
+        <div className="flex-1 flex flex-col bg-slate-900 text-slate-200">
+    
+    <Navbar teamName={team.name} heading="Home" subLine="Monitor all your work here"/>
+
+    <div className="p-8 space-y-10">
+
+        <div className="grid grid-cols-4 gap-6">
+            <StateCard title="Total Projects" value={stats.numProjects} />
+            <StateCard title="Total Tasks" value={stats.numAllTasks} />
+            <StateCard title="Assigned Tasks" value={stats.numMyTasks} />
+            <StateCard title="Completed Tasks" value={stats.numDoneTasks} />
+        </div>
+
+      
+        <div className="grid grid-cols-2 gap-8">
+
+            <div className="bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-lg space-y-4">
+                <h3 className="text-lg font-semibold text-white">Assigned Tasks</h3>
+
                 {
-                    teamMembers.map((tm: any) => (
-                        <div key={tm._id} className="shadow-lg bg-gray-200 w-50 h-20 flex justify-center items-center">
-                            <h3>{tm.userId.name}</h3>
+                    assignTasks.map((t : any) => (
+                        <div key={t._id} className="flex justify-between items-center bg-slate-700 border border-slate-600 px-4 py-2 rounded-md">
+                            <NavLink 
+                                to={`/dashboard/teams/${team._id}/tasks/${t._id}`}
+                                className="hover:text-indigo-400 transition"
+                            >
+                                {t.title}
+                            </NavLink>
+                            <p className="text-sm text-slate-300">{t.priority}</p>
+                        </div>
+                    ))
+                }
+
+                <div className="mt-4">
+                    <NavLink  
+                        to={`/dashboard/teams/${team._id}/task`}
+                        className="block text-center bg-indigo-500 hover:bg-indigo-600 text-white py-2 rounded-md transition"
+                    >
+                        Show All Tasks
+                    </NavLink>
+                </div>
+            </div>
+
+
+            <div className="bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-lg space-y-6">
+                <h3 className="text-lg font-semibold text-white">Projects</h3>
+
+                {
+                    projects.map((pro : any) => (
+                        <div 
+                            key={pro._id} 
+                            className="bg-slate-700 border border-slate-600 rounded-xl px-5 py-4 flex items-center justify-center hover:bg-slate-600 transition"
+                        >
+                            <NavLink 
+                                to={`/dashboard/teams/${team._id}/projects/${pro._id}`}
+                                className="hover:text-indigo-400 transition"
+                            >
+                                {pro.name}
+                            </NavLink>
                         </div>
                     ))
                 }
             </div>
-            
+
         </div>
+
+
+       
+        <div className="bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-lg">
+            <h3 className="text-lg font-semibold text-white mb-6">Team Members</h3>
+
+            <div className="flex flex-wrap gap-6">
+                {
+                    teamMembers.map((tm: any) => (
+                        <div 
+                            key={tm._id} 
+                            className="bg-slate-700 border border-slate-600 rounded-lg px-6 py-4 flex items-center justify-center hover:bg-slate-600 transition"
+                        >
+                            <h3 className="text-slate-200">{tm.userId.name}</h3>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
     )
 }

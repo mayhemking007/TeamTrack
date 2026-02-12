@@ -257,7 +257,13 @@ taskRouter.get('/teams/:teamId/tasks', async(req, res) => {
     const pageLimit = Number(limit) || 10;
     const skip = (pageNumber - 1) * pageLimit;
     try{
-        const tasks = await TaskModel.find(filter).skip(skip).limit(pageLimit).sort({createdAt : -1} as any)
+        const tasks = await TaskModel.find(filter).populate({
+            path : "assignedTo",
+            populate : {
+                path : "userId",
+                select : "name username email"
+            }
+        }).skip(skip).limit(pageLimit).sort({createdAt : -1} as any);
         if(tasks){
             const total = await TaskModel.countDocuments(filter);
             res.json({

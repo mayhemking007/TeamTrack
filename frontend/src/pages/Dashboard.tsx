@@ -28,12 +28,11 @@ export default function Dashboard(){
         return;
     }
     return (
-        <div className="flex">
+       <div className="flex min-h-screen bg-slate-950 items-stretch">
             <Sidebar team={team} />
-            <main>
+            <main className="flex-1 flex flex-col bg-slate-950">
                 <Outlet context={{team}}/>
             </main>
-            
         </div>
     )
 }
