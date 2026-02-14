@@ -17,17 +17,30 @@ export default function TeamMemberPage(){
     }, [team._id]);
     if(!team) return <div>No Team</div>
     return(
-        <div>
+        <div className="flex-1 flex flex-col bg-slate-900 text-slate-200">
+    
             <Navbar teamName={team.name} heading="Team Members" subLine="All your team members"/>
-            <div className="m-10 flex justify-evenly">
-                {
-                    teamMembers.map((tm : any) => (
-                       <div key={tm._id} className="shadow-lg bg-gray-200 w-50 h-20 flex justify-center items-center">
-                            <h3>{tm.userId.name}</h3>
-                        </div>
-                    ))
-                }
+
+            <div className="p-8">
+
+                <div className="grid grid-cols-4 gap-8">
+                    {
+                        teamMembers.map((tm : any) => (
+                        <div 
+                                key={tm._id} 
+                                className="bg-slate-800 border border-slate-700 rounded-xl shadow-lg px-6 py-6 flex items-center justify-center hover:bg-slate-700 transition"
+                            >
+                                <h3 className="font-medium text-slate-200">
+                                    {tm.userId.name}
+                                </h3>
+                            </div>
+                        ))
+                    }
+                </div>
+
             </div>
+
         </div>
+
     )
 }

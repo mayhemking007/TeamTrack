@@ -50,24 +50,50 @@ export default function SingleProjectPage(){
         )
     }
     return (
-        <div>
+        <div className="flex-1 flex flex-col bg-slate-900 text-slate-200">
+    
             <Navbar teamName={team.name} heading="Project" subLine="Manage all your project Sprints here."/>
-            <div className="m-5 flex justify-evenly">
-                <StateCard title="Number of Sprints" value={stats.numSprints} />
-                <StateCard title="Number of Tasks" value={stats.numTasks} />
+
+            <div className="p-8 space-y-10">
+
+              
+                <div className="grid grid-cols-2 gap-8">
+                    <StateCard title="Number of Sprints" value={stats.numSprints} />
+                    <StateCard title="Number of Tasks" value={stats.numTasks} />
+                </div>
+
+               
+                <div className="grid grid-cols-3 gap-8">
+                    {
+                        sprints.map((sp : any) => (
+                            <div 
+                                key={sp._id} 
+                                className="bg-slate-800 border border-slate-700 rounded-xl shadow-lg px-6 py-6 flex items-center justify-center hover:bg-slate-700 transition"
+                            >
+                                <NavLink 
+                                    to={`/dashboard/teams/${teamId}/projects/${projectId}/sprints/${sp._id}`}
+                                    className="font-medium hover:text-indigo-400 transition"
+                                >
+                                    {sp.name}
+                                </NavLink>
+                            </div>
+                        ))
+                    }
+                </div>
+
+               
+                <div className="flex justify-end">
+                    <NavLink 
+                        to={`/dashboard/teams/${teamId}/projects/${projectId}/sprints/new`}
+                        className="px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-md transition"
+                    >
+                        Create Sprint
+                    </NavLink>
+                </div>
+
             </div>
-            <div>
-                {
-                    sprints.map((sp : any) => (
-                        <div key={sp._id} className="w-80 h-20 m-10 mb-8 border rounded-xl shadow-lg px-5 py-5 flex items-center justify-center">
-                        <NavLink key={sp._id} to={`/dashboard/teams/${teamId}/projects/${projectId}/sprints/${sp._id}`}>{sp.name}</NavLink>
-                        </div>
-                    ))
-                }
-            </div>
-            <div>
-                <NavLink to={`/dashboard/teams/${teamId}/projects/${projectId}/sprints/new`} >Create Sprint</NavLink>
-            </div>
+
         </div>
+
     )
 }
