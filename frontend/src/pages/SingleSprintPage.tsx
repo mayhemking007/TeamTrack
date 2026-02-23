@@ -10,7 +10,7 @@ export default function SingleSprintPage(){
     
     useEffect(() => {
         setLoading(true);
-        getSprintStats(sprintId as string).then(setStats);
+        getSprintStats(sprintId as string, teamId as string).then(setStats);
         setLoading(false);
     }, [sprintId]);
     if(loading){

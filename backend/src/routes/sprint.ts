@@ -1,6 +1,6 @@
 import  express, { Router } from "express";
 import {z} from "zod";
-import { ProjectModel, SprintModel, TaskModel } from "../db/Model.js";
+import { ProjectModel, SprintModel, TaskModel, TeamMemberModel, TeamModel } from "../db/Model.js";
 import { teamMiddleware } from "../middleware/team.js";
 import { AdminMiddleware } from "../middleware/admin.js";
 import { authMiddleware } from "../middleware/auth.js";
@@ -188,17 +188,17 @@ sprintRouter.delete('/:sprintId', teamMiddleware, AdminMiddleware ,async (req, r
             error : "Cannot DELETE sprint. Please try again later."
         });
     }
-
 });
 
-sprintRouter.get("/:sprintId/sprint-stats", async (req, res) => {
+sprintRouter.get("/teams/:teamId/sprint/:sprintId/sprint-stats", async (req, res) => {
     const sprintId = req.params.sprintId;
+    const teamId = req.params.teamId;
     const userId = req.userId;
     let numTasks = 0;
     let numAssignedTasks = 0;
     try{
         const tasks = await TaskModel.find({
-            sprintId : sprintId,
+            sprintId : sprintId!,
             status : "active"
         });
         if(tasks){
@@ -208,10 +208,14 @@ sprintRouter.get("/:sprintId/sprint-stats", async (req, res) => {
             console.log("No tasks found with the sprintId");
             numTasks = 0;
         }
+        const teamMember = await TeamMemberModel.findOne({
+            userId: userId!,
+            teamId : teamId!
+        });
         const assignTasks = await TaskModel.find({
             sprintId : sprintId,
             status : "active",
-            assignedTo : userId!
+            assignedTo : teamMember!._id
         });
         if(assignTasks){
             numAssignedTasks = assignTasks.length;

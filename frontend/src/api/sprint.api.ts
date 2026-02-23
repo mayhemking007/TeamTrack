@@ -14,7 +14,7 @@ export const createSprints = async (projectId : string, payload : {
     return response.data;
 }
 
-export const getSprintStats = async (sprintId : string) => {
-    const response = await authClient.get(`/sprints/${sprintId}/sprint-stats`);
+export const getSprintStats = async (sprintId : string, teamId : string) => {
+    const response = await authClient.get(`/sprints/teams/${teamId}/sprint/${sprintId}/sprint-stats`);
     return response.data.data;
 }
