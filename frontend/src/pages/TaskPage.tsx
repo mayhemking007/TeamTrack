@@ -48,9 +48,9 @@ export default function TaskPage(){
     if(!team){
         return <div>No Team</div>
     }
-    if(tasks.length === 0){
-        return <div className="text-white">No task</div>
-    }
+    // if(tasks.length === 0){
+    //     return <div className="text-white">No task</div>
+    // }
     return(
         <div className="flex-1 flex flex-col bg-slate-900 text-slate-200">
     
@@ -123,7 +123,7 @@ export default function TaskPage(){
                             <p className="font-medium">AssignTo</p>
                     </div>
                     {
-                        tasks.map((t : any) => (
+                        tasks.length > 0 ? tasks.map((t : any) => (
                             <div key={t._id} className="grid grid-cols-3 items-center px-6 py-4 hover:bg-slate-700 transition">
                                 <NavLink 
                                     to={`/dashboard/teams/${team._id}/tasks/${t._id}`}
@@ -134,7 +134,8 @@ export default function TaskPage(){
                                 <p className="text-sm text-slate-300">{t.priority}</p>
                                 <p className="text-sm text-slate-400">{t.assignedTo?.userId?.name}</p>
                             </div>
-                        ))
+                        )) : 
+                        <></>
                     }
                 </div>
 
@@ -150,12 +151,12 @@ export default function TaskPage(){
                     </button>
 
                     <span className="text-slate-300 text-sm">
-                        Page {page} of {totalPages}
+                        Page {page} of {totalPages === 0 ? 1 : totalPages}
                     </span>
 
                     <button
                         onClick={() => setPage((p) => p + 1)}
-                        disabled={page === totalPages}
+                        disabled={page >= totalPages}
                         className="px-4 py-2 bg-slate-700 border border-slate-600 rounded-md hover:bg-slate-600 transition disabled:opacity-40"
                     >
                         Next

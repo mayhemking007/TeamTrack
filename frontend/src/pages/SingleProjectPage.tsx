@@ -62,7 +62,15 @@ export default function SingleProjectPage(){
                     <StateCard title="Number of Tasks" value={stats.numTasks} />
                 </div>
 
-               
+                <div className="flex justify-end">
+                    <NavLink 
+                        to={`/dashboard/teams/${teamId}/projects/${projectId}/sprints/new`}
+                        className="px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-md transition"
+                    >
+                        Create Sprint
+                    </NavLink>
+                </div>
+                
                 <div className="grid grid-cols-3 gap-8">
                     {
                         sprints.map((sp : any) => (
@@ -82,14 +90,7 @@ export default function SingleProjectPage(){
                 </div>
 
                
-                <div className="flex justify-end">
-                    <NavLink 
-                        to={`/dashboard/teams/${teamId}/projects/${projectId}/sprints/new`}
-                        className="px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-md transition"
-                    >
-                        Create Sprint
-                    </NavLink>
-                </div>
+               
 
             </div>
 

@@ -2,17 +2,29 @@ import { useEffect, useState } from "react"
 import { NavLink, useParams } from "react-router";
 import { getSprintStats } from "../api/sprint.api";
 import StateCard from "../components/StateCard";
+import { getTasksFiltered } from "../api/task.api";
 
 export default function SingleSprintPage(){
     const [stats, setStats] = useState<any>(null);
     const [loading, setLoading] = useState(false);
-    const {sprintId, teamId} = useParams();
-    
+    const {sprintId, teamId, projectId} = useParams();
+    const [tasks, setTasks] = useState<any>([]);
+    const fetchTasks = async() => {
+        const response = await getTasksFiltered(teamId as string, projectId as string, sprintId as string, 1, 5, "");
+        setTasks(response.data);
+    }
     useEffect(() => {
+        if(!teamId) return;
         setLoading(true);
         getSprintStats(sprintId as string, teamId as string).then(setStats);
         setLoading(false);
-    }, [sprintId]);
+    }, [sprintId, teamId]);
+    useEffect(() => {
+        if(!teamId) return;
+        setLoading(true);
+        fetchTasks();
+        setLoading(false);
+    }, [sprintId, projectId, teamId])
     if(loading){
         return (
             <div>Loading....</div>
@@ -20,6 +32,9 @@ export default function SingleSprintPage(){
     }
     if(!stats){
         return <div>No stats</div>
+    }
+    if(tasks.length === 0){
+        return (<div className="text-white">No task</div>)
     }
     return (
         <div className="flex-1 flex flex-col bg-slate-900 text-slate-200 p-8 space-y-10">
@@ -39,6 +54,30 @@ export default function SingleSprintPage(){
                     Create Tasks
                 </NavLink>
             </div>
+
+            <div className="bg-slate-800 border border-slate-700 rounded-xl shadow-lg divide-y divide-slate-700">
+                <div className="grid grid-cols-3 items-center px-6 py-4 bg-slate-850 text-slate-300 font-semibold">
+                            
+                        <p className="font-medium">Task</p>
+                        <p className="font-medium">Priority</p>
+                        <p className="font-medium">AssignTo</p>
+                </div>
+                {
+                     tasks.map((t : any) => (
+                        <div key={t._id} className="grid grid-cols-3 items-center px-6 py-4 hover:bg-slate-700 transition">
+                            <NavLink 
+                                to={`/dashboard/teams/${teamId}/tasks/${t._id}`}
+                                className="font-medium hover:text-indigo-400 transition"
+                            >
+                                {t.title}
+                            </NavLink>
+                            <p className="text-sm text-slate-300">{t.priority}</p>
+                            <p className="text-sm text-slate-400">{t.assignedTo?.userId?.name}</p>
+                        </div>
+                    )) 
+                }
+            </div>
+
 
         </div>
 
