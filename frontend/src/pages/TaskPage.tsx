@@ -57,7 +57,6 @@ export default function TaskPage(){
             <Navbar teamName={team.name} heading="Tasks" subLine="Work on your Tasks"/>
 
             <div className="p-8 space-y-8">
-
                 <div className="flex flex-wrap gap-6 bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-lg">
                     
                     <select
@@ -111,6 +110,14 @@ export default function TaskPage(){
                         <option value={25}>25</option>
                         <option value={50}>50</option>
                     </select>
+                    <div className="flex justify-end">
+                        <NavLink 
+                            to={`/dashboard/teams/${team._id}/task/new`}
+                            className="ml-150 px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-md transition"
+                        >
+                            Create Tasks
+                        </NavLink>
+                    </div>
                 </div>
 
 
