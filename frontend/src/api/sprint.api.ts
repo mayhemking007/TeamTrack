@@ -18,3 +18,9 @@ export const getSprintStats = async (sprintId : string, teamId : string) => {
     const response = await authClient.get(`/sprints/teams/${teamId}/sprint/${sprintId}/sprint-stats`);
     return response.data.data;
 }
+
+export const getSprint = async (sprintId : string) => {
+    const response = await authClient.get(`/sprints/${sprintId}`);
+    console.log(response.data);
+    return response.data.data;
+}

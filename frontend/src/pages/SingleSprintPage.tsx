@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react"
 import { NavLink, useParams } from "react-router";
-import { getSprintStats } from "../api/sprint.api";
+import { getSprint, getSprintStats } from "../api/sprint.api";
 import StateCard from "../components/StateCard";
 import { getTasksFiltered } from "../api/task.api";
+import Navbar from "../components/Navbar";
+import { getTeam } from "../api/team.api";
 
 export default function SingleSprintPage(){
     const [stats, setStats] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const {sprintId, teamId, projectId} = useParams();
     const [tasks, setTasks] = useState<any>([]);
+    const [team, setTeam] = useState<any>(null);
+    const [sprint, setSprint] = useState<any>(null);
     const fetchTasks = async() => {
         const response = await getTasksFiltered(teamId as string, projectId as string, sprintId as string, 1, 5, "");
         setTasks(response.data);
@@ -16,6 +20,8 @@ export default function SingleSprintPage(){
     useEffect(() => {
         if(!teamId) return;
         setLoading(true);
+        getTeam(teamId as string).then((res) => setTeam(res.data));
+        getSprint(sprintId as string).then(setSprint);
         getSprintStats(sprintId as string, teamId as string).then(setStats);
         setLoading(false);
     }, [sprintId, teamId]);
@@ -30,6 +36,16 @@ export default function SingleSprintPage(){
             <div>Loading....</div>
         )
     }
+    if(!team){
+        return (
+            <div>No Team</div>
+        )
+    }
+    if(!sprint){
+        return (
+            <div>No Sprint</div>
+        )
+    }
     if(!stats){
         return <div>No stats</div>
     }
@@ -39,7 +55,8 @@ export default function SingleSprintPage(){
     return (
         <div className="flex-1 flex flex-col bg-slate-900 text-slate-200 p-8 space-y-10">
 
-          
+           <Navbar teamName={team.name} heading={sprint.name} subLine="Manage all your project Sprints here."/>
+           
             <div className="grid grid-cols-2 gap-8">
                 <StateCard value={stats.numTasks} title="Tasks in the Sprint" />
                 <StateCard value={stats.numAssignedTasks} title="Assigned Tasks in the Sprint." />

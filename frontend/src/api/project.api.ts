@@ -16,3 +16,9 @@ export const getDashStats = async (teamId : string, projectId : string) => {
     const response = await authClient.get(`/projects/teams/${teamId}/projects/${projectId}/dash-stats`);
     return response.data.data;
 }
+
+export const getProject = async (projectId : string) => {
+    const response = await authClient.get(`/projects/${projectId}`);
+    console.log(response.data);
+    return response.data.data;
+}

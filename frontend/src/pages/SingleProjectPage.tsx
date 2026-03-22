@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getDashStats } from "../api/project.api";
+import { getDashStats, getProject } from "../api/project.api";
 import { NavLink, useParams } from "react-router";
 import StateCard from "../components/StateCard";
 import Navbar from "../components/Navbar";
@@ -12,6 +12,7 @@ export default function SingleProjectPage(){
     const [loading, setLoading] = useState(false);
     const [team, setTeam] = useState<any>(null);
     const [sprints, setSprints] = useState<any>(null);
+    const [project, setProject] = useState<any>(null);
 
 
     const currentTeamHandler = async () => {
@@ -25,6 +26,7 @@ export default function SingleProjectPage(){
         setLoading(true);
         getDashStats(teamId as string, projectId as string).then(setStats);
         getSprints(projectId as string).then(setSprints);
+        getProject(projectId as string).then(setProject);
         currentTeamHandler();
         setLoading(false);
         console.log(team);
@@ -49,10 +51,15 @@ export default function SingleProjectPage(){
             <div>No Sprints</div>
         )
     }
+    if(!project){
+        return (
+            <div>No Project</div>
+        )
+    }
     return (
         <div className="flex-1 flex flex-col bg-slate-900 text-slate-200">
     
-            <Navbar teamName={team.name} heading="Project" subLine="Manage all your project Sprints here."/>
+            <Navbar teamName={team.name} heading={project.name} subLine="Manage all your project Sprints here."/>
 
             <div className="p-8 space-y-10">
 

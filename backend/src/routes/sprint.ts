@@ -239,4 +239,29 @@ sprintRouter.get("/teams/:teamId/sprint/:sprintId/sprint-stats", async (req, res
             error : "Cannot GET stats. Please try again."
         });
     }
-})
+});
+
+sprintRouter.get('/:sprintId', async(req, res) => {
+    const sprintId = req.params.sprintId;
+    try{
+        const sprint = await SprintModel.findOne({
+            _id : sprintId
+        });
+        if(sprint){
+            res.json({
+                success : true,
+                data : sprint
+            });
+        }
+        else{
+            throw new Error("Cannot find the sprint");
+        }
+    }
+    catch(e){
+        console.log(e);
+        res.status(500).json({
+            success : false,
+            error : "Internal Server Error. Cannot GET sprint."
+        })
+    }
+});

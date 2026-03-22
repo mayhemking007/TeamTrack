@@ -212,4 +212,29 @@ projectRouter.get('/teams/:teamId/projects/:projectId/dash-stats', async (req, r
             error : "Cannot GET the project dash stats. Please try later."
         })
     }
+});
+
+projectRouter.get('/:projectId', async (req, res) => {
+    const projectId = req.params.projectId;
+    try{
+        const project = await ProjectModel.findOne({
+            _id : projectId
+        });
+        if(project){
+            res.json({
+                success : true,
+                data  : project
+            });
+        }
+        else{
+            throw new Error("Cannot find the project");
+        }
+    }
+    catch(e){
+        console.log(e);
+        res.status(500).json({
+            success : false,
+            error : "Internal Server Error. Cannot GET the project."
+        })
+    }
 })
